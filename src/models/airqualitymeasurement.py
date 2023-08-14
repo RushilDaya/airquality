@@ -1,5 +1,10 @@
 from dataclasses import dataclass
 import json
+from datetime import datetime
+
+from src.aws.dynamodb import DynamoDB
+
+VALIDATION_CONFIGURATION = json.load(open("src/models/validators/airqualitymeasurement.json"))
 
 
 @dataclass
@@ -17,28 +22,47 @@ class AirQualityMeasurement:
     unit: str
     value: float
 
+    @property
+    def composite_location(self) -> str:
+        return f"{self.country}_{self.city}"
+
+    @property
+    def timestamp_utc(self) -> int:
+        # timestamp in epoch format
+        return int(datetime.strptime(self.date_utc, "%Y-%m-%dT%H:%M:%S.%fZ").timestamp())
+
     def save(self):
         # save to dynamodb table
-        print(f"Saving measurement: {self.__dict__}")
+        datatypes = {k: v["type"] for k, v in VALIDATION_CONFIGURATION.items()}
+        dynamodb = DynamoDB()
+        dynamo_formatted_values = dynamodb.format_values(self.__dict__, datatypes)
+        # add the values which constitute the primary key
+        dynamo_formatted_values.update(
+            dynamodb.format_values(
+                {"composite_location": self.composite_location}, {"composite_location": "str"}
+            )
+        )
+        dynamo_formatted_values.update(
+            dynamodb.format_values({"timestamp_utc": self.timestamp_utc}, {"timestamp_utc": "int"})
+        )
+        print(f"saving to dynamodb: {dynamo_formatted_values}")
+        dynamodb.put_measurement(dynamo_formatted_values)
 
     @classmethod
     def from_raw_message(cls, raw_measurement: dict):
-        validation_configuration = json.load(
-            open("src/models/validators/airqualitymeasurement.json")
-        )
         return cls(
-            country=cls.safeload(raw_measurement, "country", validation_configuration),
-            city=cls.safeload(raw_measurement, "city", validation_configuration),
-            location=cls.safeload(raw_measurement, "location", validation_configuration),
-            latitude=cls.safeload(raw_measurement, "latitude", validation_configuration),
-            longitude=cls.safeload(raw_measurement, "longitude", validation_configuration),
-            sourceName=cls.safeload(raw_measurement, "sourceName", validation_configuration),
-            sourceType=cls.safeload(raw_measurement, "sourceType", validation_configuration),
-            date_utc=cls.safeload(raw_measurement, "date_utc", validation_configuration),
-            date_local=cls.safeload(raw_measurement, "date_local", validation_configuration),
-            parameter=cls.safeload(raw_measurement, "parameter", validation_configuration),
-            unit=cls.safeload(raw_measurement, "unit", validation_configuration),
-            value=cls.safeload(raw_measurement, "value", validation_configuration),
+            country=cls.safeload(raw_measurement, "country", VALIDATION_CONFIGURATION),
+            city=cls.safeload(raw_measurement, "city", VALIDATION_CONFIGURATION),
+            location=cls.safeload(raw_measurement, "location", VALIDATION_CONFIGURATION),
+            latitude=cls.safeload(raw_measurement, "latitude", VALIDATION_CONFIGURATION),
+            longitude=cls.safeload(raw_measurement, "longitude", VALIDATION_CONFIGURATION),
+            sourceName=cls.safeload(raw_measurement, "sourceName", VALIDATION_CONFIGURATION),
+            sourceType=cls.safeload(raw_measurement, "sourceType", VALIDATION_CONFIGURATION),
+            date_utc=cls.safeload(raw_measurement, "date_utc", VALIDATION_CONFIGURATION),
+            date_local=cls.safeload(raw_measurement, "date_local", VALIDATION_CONFIGURATION),
+            parameter=cls.safeload(raw_measurement, "parameter", VALIDATION_CONFIGURATION),
+            unit=cls.safeload(raw_measurement, "unit", VALIDATION_CONFIGURATION),
+            value=cls.safeload(raw_measurement, "value", VALIDATION_CONFIGURATION),
         )
 
     @classmethod
@@ -47,7 +71,7 @@ class AirQualityMeasurement:
         # it is not used when querying the database (assumes data is already validated)
         value = raw_measurement["MessageAttributes"][key]["Value"]
         if validation_configuration.get(key) is None:
-            return value
+            raise InvalidAirQualityMeasurement(f"Unkown key: {key}")
 
         # force type conversion
         if validation_configuration[key]["type"] == "float":
@@ -57,7 +81,7 @@ class AirQualityMeasurement:
         if validation_configuration[key]["type"] == "str":
             value = str(value)
 
-        #force case conversion
+        # force case conversion
         if validation_configuration[key].get("case") is not None:
             if validation_configuration[key]["case"] == "upper":
                 value = value.upper()
