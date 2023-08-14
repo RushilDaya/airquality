@@ -1,0 +1,76 @@
+{
+    "country": {
+        "type": "str",
+        "accepted_values": [
+            "BE"
+        ]
+    },
+    "unit": {
+        "type": "str",
+        "accepted_values": [
+            "µg/m³",
+            "ppm",
+            "ugm3",
+            "particles/cm³",
+            "iaq",
+            "ppb"
+        ]
+    },
+    "date_utc": {
+        "type": "str"
+    },
+    "date_local": {
+        "type": "str"
+    },
+    "city": {
+        "type": "str"
+    },
+    "sourceType": {
+        "type": "str"
+    },
+    "parameter": {
+        "type": "str",
+        "case": "upper",
+        "accepted_values": [
+            "PM10",
+            "PM2.5",
+            "PM0.3",
+            "PM5.0",
+            "PM0.5",
+            "PM4.0",
+            "O₃",
+            "CO",
+            "NO₂",
+            "SO₂",
+            "BC",
+            "PM1",
+            "CO₂",
+            "VOC",
+            "NOx",
+            "NO"
+        ]
+    },
+    "latitude": {
+        "type": "float",
+        "range":{
+            "min": -90,
+            "max": 90
+        }
+    },
+    "location": {
+        "type": "str"
+    },
+    "sourceName": {
+        "type": "str"
+    },
+    "value": {
+        "type": "float"
+    },
+    "longitude": {
+        "type": "float",
+        "range":{
+            "min": -180,
+            "max": 180
+        }
+    }
+}

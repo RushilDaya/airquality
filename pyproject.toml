@@ -1,0 +1,24 @@
+[project]
+name = "aq"
+version = "0.0.1"
+requires-python=">=3.8"
+dependencies = [
+        "boto3"
+]
+
+
+[project.optional-dependencies]
+test = []
+
+
+[build-system]
+requires = [
+    "setuptools >= 48",
+    "wheel >= 0.29.0",
+]
+build-backend = 'setuptools.build_meta'
+
+
+[tool.setuptools]
+script-files = []
+packages = { find = {} }
