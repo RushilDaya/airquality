@@ -1,0 +1,51 @@
+{
+    "Type" : "Notification",
+    "MessageId" : "b76e06d0-fa60-5613-b48c-5b9a3551e7cb",
+    "TopicArn" : "arn:aws:sns:us-east-1:470049585876:OPENAQ_NEW_MEASUREMENT",
+    "Message" : "{\"date\":{\"utc\":\"2023-08-07T09:00:00.000Z\",\"local\":\"2023-08-07T08:53:00-00:07\",\"raw\":\"08/07/23 09:00(-7)\"},\"parameter\":\"pm25\",\"value\":3.6,\"unit\":\"µg/m³\",\"averagingPeriod\":{\"unit\":\"hours\",\"value\":1},\"location\":\"Rock Springs SLAMS\",\"city\":\"Rock Springs\",\"country\":\"US\",\"coordinates\":{\"latitude\":41.592591,\"longitude\":-109.220125},\"attribution\":[{\"name\":\"US EPA AirNow\",\"url\":\"http://www.airnow.gov/\"},{\"name\":\"Wyoming Department of Environmental Quality\"}],\"sourceName\":\"AirNow\",\"sourceType\":\"government\",\"mobile\":false}",
+    "Timestamp" : "2023-08-07T10:52:33.276Z",
+    "SignatureVersion" : "1",
+    "Signature" : "GL26HlahZSfmXSTy/QntFIoEIGBGL3EoLY+33ri+j/7Hb259ZIHlmu7/Z5nk8bcxQ91HhclnsrDPJqEwT3CdsRw1w+Voc9CGeykWQ908Fn/hVvFAAue4xRDyFQKDJnm6HLKXCXL5+ozBc3KuuA0pF1YTe9RupjgL6P28Qn5/KtUTZ01UVdc9KqIfyNekjNJn/MimtKJCDDiY+aHBB7+upkMcNge5bqkV8PRAxwkw9DpHbjwBO/YwDay0OUawIJ1WAufrSljA8nfY0vjFZOI8tCqgBG3wt/wQv7QMZIE4A0yXCYz6Km2Up1NwEqHt7KCx2M/RmMcWTayd8Vq7WUTebw==",
+    "SigningCertURL" : "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-01d088a6f77103d0fe307c0069e40ed6.pem",
+    "UnsubscribeURL" : "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:470049585876:OPENAQ_NEW_MEASUREMENT:9de492c5-485c-4bf0-9ebf-ed27c07531d6",
+    "MessageAttributes" : {
+      "country" : {"Type":"String","Value":"US"},
+      "unit" : {"Type":"String","Value":"µg/m³"},
+      "date_utc" : {"Type":"String","Value":"2023-08-07T09:00:00.000Z"},
+      "date_local" : {"Type":"String","Value":"2023-08-07T08:53:00-00:07"},
+      "city" : {"Type":"String","Value":"Rock Springs"},
+      "sourceType" : {"Type":"String","Value":"government"},
+      "parameter" : {"Type":"String","Value":"pm25"},
+      "latitude" : {"Type":"Number","Value":"41.592591"},
+      "location" : {"Type":"String","Value":"Rock Springs SLAMS"},
+      "sourceName" : {"Type":"String","Value":"AirNow"},
+      "value" : {"Type":"Number","Value":"3.6"},
+      "longitude" : {"Type":"Number","Value":"-109.220125"}
+    }
+  }
+
+  {
+    "Type" : "Notification",
+    "MessageId" : "af627665-5ed3-5bf1-9078-2b2f828e8d3a",
+    "TopicArn" : "arn:aws:sns:us-east-1:470049585876:OPENAQ_NEW_MEASUREMENT",
+    "Message" : "{\"date\":{\"utc\":\"2023-08-08T03:00:00.000Z\",\"local\":\"2023-08-08T00:00:00-03:00\"},\"parameter\":\"pm10\",\"value\":34,\"unit\":\"µg/m³\",\"averagingPeriod\":{\"unit\":\"hours\",\"value\":24},\"location\":\"LA BOCA\",\"city\":\"Buenos Aires\",\"country\":\"AR\",\"coordinates\":{\"longitude\":-58.36555,\"latitude\":-34.62527},\"attribution\":[{\"name\":\"Buenos Aires Ciudad, Agencia de Protección Ambiental\",\"url\":\"http://www.buenosaires.gob.ar/agenciaambiental/monitoreoambiental\"}],\"sourceName\":\"Buenos Aires\",\"sourceType\":\"government\",\"mobile\":false}",
+    "Timestamp" : "2023-08-07T11:48:45.120Z",
+    "SignatureVersion" : "1",
+    "Signature" : "R/TnwLTflA4962p9jdl9JGGG14T4guOTeOHyzyLIApWxZTr7FNVvztUjjikelDTmEUfFwDfRIm9RFujywZQiei4qfIBvURomR84Mhf2qqPwAIdIRExFm1fuM20MU2ge845He0ziB1oOYv2Egor2+VVp4dhIjQOWPZnT4uJ+5mjkHRY/QeWtmM/w+pfpli5r+QTm9zdA9Dyybs2MuDDoGlwyBqehkG8lJDW8rKNI2icZ6+DBb00hVUzA/eKJMM1Ca/YJT6ioGXXwWXm3BCgSckis0DAYJuvfxUN/txeIv29FE6BHYFYbTH+coz/AlYAUU8hjSfMwtZ7jdSv2WXAluhw==",
+    "SigningCertURL" : "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-01d088a6f77103d0fe307c0069e40ed6.pem",
+    "UnsubscribeURL" : "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:470049585876:OPENAQ_NEW_MEASUREMENT:9de492c5-485c-4bf0-9ebf-ed27c07531d6",
+    "MessageAttributes" : {
+      "country" : {"Type":"String","Value":"AR"},
+      "unit" : {"Type":"String","Value":"µg/m³"},
+      "date_utc" : {"Type":"String","Value":"2023-08-08T03:00:00.000Z"},
+      "date_local" : {"Type":"String","Value":"2023-08-08T00:00:00-03:00"},
+      "city" : {"Type":"String","Value":"Buenos Aires"},
+      "sourceType" : {"Type":"String","Value":"government"},
+      "parameter" : {"Type":"String","Value":"pm10"},
+      "latitude" : {"Type":"Number","Value":"-34.62527"},
+      "location" : {"Type":"String","Value":"LA BOCA"},
+      "sourceName" : {"Type":"String","Value":"Buenos Aires"},
+      "value" : {"Type":"Number","Value":"34"},
+      "longitude" : {"Type":"Number","Value":"-58.36555"}
+    }
+  }
