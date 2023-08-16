@@ -1,13 +1,11 @@
-import boto3
 import json
-import random
 from typing import Optional
 from src.process_new_aq_measurement import process_new_aq_measurement
 
 # minimal logic here: just pass the payload to the process_new_aq_measurement function
 def lambda_handler(event:dict, context:Optional[dict] = None):
     for record in event["Records"]:
-        payload = record["body"]
+        payload = record.get("body", record)
         process_new_aq_measurement(payload)
     return {"statusCode": 200, "body": json.dumps(f'Processed {len(event["Records"])} messages')}
 
