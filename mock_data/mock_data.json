@@ -1,7 +1,6 @@
 {
     "mock_data":[
         {
-        "body":{
             "MessageAttributes": {
                 "country" : {"Type":"String","Value":"BE"},
                 "unit" : {"Type":"String","Value":"µg/m³"},
@@ -16,7 +15,6 @@
                 "value" : {"Type":"Number","Value":"34"},
                 "longitude" : {"Type":"Number","Value":"4.7138"}
             }
-        }
     }
     ]
 }
