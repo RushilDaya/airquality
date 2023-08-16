@@ -6,7 +6,7 @@
                 "unit" : {"Type":"String","Value":"µg/m³"},
                 "date_utc" : {"Type":"String","Value":"2023-08-14T06:00:00.000Z"},
                 "date_local" : {"Type":"String","Value":"2023-08-14T07:00:00+01:00"},
-                "city" : {"Type":"String","Value":"Dinant"},
+                "city" : {"Type":"String","Value":"Leuven"},
                 "sourceType" : {"Type":"String","Value":"government"},
                 "parameter" : {"Type":"String","Value":"pm10"},
                 "latitude" : {"Type":"Number","Value":"50.8823"},
@@ -15,6 +15,118 @@
                 "value" : {"Type":"Number","Value":"34"},
                 "longitude" : {"Type":"Number","Value":"4.7138"}
             }
+    },
+    {
+        "MessageAttributes": {
+            "country" : {"Type":"String","Value":"BE"},
+            "unit" : {"Type":"String","Value":"µg/m³"},
+            "date_utc" : {"Type":"String","Value":"2023-08-16T09:00:00.000Z"},
+            "date_local" : {"Type":"String","Value":"2023-08-16T10:00:00+01:00"},
+            "city" : {"Type":"String","Value":"Leuven"},
+            "sourceType" : {"Type":"String","Value":"government"},
+            "parameter" : {"Type":"String","Value":"pm10"},
+            "latitude" : {"Type":"Number","Value":"51.8823"},
+            "location" : {"Type":"String","Value":"Sluisstraat"},
+            "sourceName" : {"Type":"String","Value":"Leuven"},
+            "value" : {"Type":"Number","Value":"30"},
+            "longitude" : {"Type":"Number","Value":"4.7138"}
+        }
+    },
+    {
+        "MessageAttributes": {
+            "country" : {"Type":"String","Value":"BE"},
+            "unit" : {"Type":"String","Value":"µg/m³"},
+            "date_utc" : {"Type":"String","Value":"2023-08-16T09:30:00.000Z"},
+            "date_local" : {"Type":"String","Value":"2023-08-16T10:30:00+01:00"},
+            "city" : {"Type":"String","Value":"Leuven"},
+            "sourceType" : {"Type":"String","Value":"government"},
+            "parameter" : {"Type":"String","Value":"pm10"},
+            "latitude" : {"Type":"Number","Value":"50.8823"},
+            "location" : {"Type":"String","Value":"Sluisstraat"},
+            "sourceName" : {"Type":"String","Value":"Leuven"},
+            "value" : {"Type":"Number","Value":"40"},
+            "longitude" : {"Type":"Number","Value":"4.7138"}
+        }
+    },
+    {
+        "MessageAttributes": {
+            "country" : {"Type":"String","Value":"BE"},
+            "unit" : {"Type":"String","Value":"µg/m³"},
+            "date_utc" : {"Type":"String","Value":"2023-08-16T09:38:00.000Z"},
+            "date_local" : {"Type":"String","Value":"2023-08-16T10:38:00+01:00"},
+            "city" : {"Type":"String","Value":"Leuven"},
+            "sourceType" : {"Type":"String","Value":"government"},
+            "parameter" : {"Type":"String","Value":"pm10"},
+            "latitude" : {"Type":"Number","Value":"50.8823"},
+            "location" : {"Type":"String","Value":"Sluisstraat"},
+            "sourceName" : {"Type":"String","Value":"Leuven"},
+            "value" : {"Type":"Number","Value":"45"},
+            "longitude" : {"Type":"Number","Value":"4.7138"}
+        }
+    },
+    {
+        "MessageAttributes": {
+            "country" : {"Type":"String","Value":"BE"},
+            "unit" : {"Type":"String","Value":"ppm"},
+            "date_utc" : {"Type":"String","Value":"2023-08-14T06:00:01.000Z"},
+            "date_local" : {"Type":"String","Value":"2023-08-14T07:00:01+01:00"},
+            "city" : {"Type":"String","Value":"Leuven"},
+            "sourceType" : {"Type":"String","Value":"government"},
+            "parameter" : {"Type":"String","Value":"CO"},
+            "latitude" : {"Type":"Number","Value":"50.8823"},
+            "location" : {"Type":"String","Value":"Sluisstraat"},
+            "sourceName" : {"Type":"String","Value":"Leuven"},
+            "value" : {"Type":"Number","Value":"34"},
+            "longitude" : {"Type":"Number","Value":"4.7138"}
+        }
+},
+{
+    "MessageAttributes": {
+        "country" : {"Type":"String","Value":"BE"},
+        "unit" : {"Type":"String","Value":"ppm"},
+        "date_utc" : {"Type":"String","Value":"2023-08-16T09:00:01.000Z"},
+        "date_local" : {"Type":"String","Value":"2023-08-16T10:00:01+01:00"},
+        "city" : {"Type":"String","Value":"Leuven"},
+        "sourceType" : {"Type":"String","Value":"government"},
+        "parameter" : {"Type":"String","Value":"CO"},
+        "latitude" : {"Type":"Number","Value":"51.8823"},
+        "location" : {"Type":"String","Value":"Sluisstraat"},
+        "sourceName" : {"Type":"String","Value":"Leuven"},
+        "value" : {"Type":"Number","Value":"30"},
+        "longitude" : {"Type":"Number","Value":"4.7138"}
     }
+},
+{
+    "MessageAttributes": {
+        "country" : {"Type":"String","Value":"BE"},
+        "unit" : {"Type":"String","Value":"ppm"},
+        "date_utc" : {"Type":"String","Value":"2023-08-16T09:30:01.000Z"},
+        "date_local" : {"Type":"String","Value":"2023-08-16T10:30:01+01:00"},
+        "city" : {"Type":"String","Value":"Leuven"},
+        "sourceType" : {"Type":"String","Value":"government"},
+        "parameter" : {"Type":"String","Value":"CO"},
+        "latitude" : {"Type":"Number","Value":"50.8823"},
+        "location" : {"Type":"String","Value":"Sluisstraat"},
+        "sourceName" : {"Type":"String","Value":"Leuven"},
+        "value" : {"Type":"Number","Value":"40"},
+        "longitude" : {"Type":"Number","Value":"4.7138"}
+    }
+},
+{
+    "MessageAttributes": {
+        "country" : {"Type":"String","Value":"BE"},
+        "unit" : {"Type":"String","Value":"ppm"},
+        "date_utc" : {"Type":"String","Value":"2023-08-16T09:38:01.000Z"},
+        "date_local" : {"Type":"String","Value":"2023-08-16T10:38:01+01:00"},
+        "city" : {"Type":"String","Value":"Leuven"},
+        "sourceType" : {"Type":"String","Value":"government"},
+        "parameter" : {"Type":"String","Value":"CO"},
+        "latitude" : {"Type":"Number","Value":"50.8823"},
+        "location" : {"Type":"String","Value":"Sluisstraat"},
+        "sourceName" : {"Type":"String","Value":"Leuven"},
+        "value" : {"Type":"Number","Value":"45"},
+        "longitude" : {"Type":"Number","Value":"4.7138"}
+    }
+}
     ]
 }
