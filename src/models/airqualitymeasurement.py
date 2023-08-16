@@ -3,8 +3,7 @@ import json
 from datetime import datetime
 
 from src.aws.dynamodb import DynamoDB
-
-VALIDATION_CONFIGURATION = json.load(open("src/models/validators/airqualitymeasurement.json"))
+from src.models.validators.airqualitymeasurement_config import config as VALIDATION_CONFIGURATION
 
 
 @dataclass
