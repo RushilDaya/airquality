@@ -5,3 +5,4 @@ import os
 PROFILE = os.environ.get('AWS_PROFILE', None)
 REGION = os.environ.get('AWS_REGION', 'eu-west-1')
 MEASUREMENTS_TABLE = os.environ.get('MEASUREMENTS_TABLE', 'airmax-rushildaya-aq-measurements')
+AGGREGATIONS_TABLE = os.environ.get('AGGREGATIONS_TABLE', 'airmax-rushildaya-aq-aggregations')

@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-import json
 from datetime import datetime
 
 from src.aws.dynamodb import DynamoDB
@@ -64,6 +63,13 @@ class AirQualityMeasurement:
             unit=cls.safeload(raw_measurement, "unit", VALIDATION_CONFIGURATION),
             value=cls.safeload(raw_measurement, "value", VALIDATION_CONFIGURATION),
         )
+    
+    @classmethod
+    def from_dynamo_item(cls, dynamo_item: dict):
+        standard_dict = DynamoDB.from_dynamo_to_standard_dict(dynamo_item)
+        del standard_dict["composite_location"] # this is not a property of the class
+        del standard_dict["timestamp_utc"] # this is not a property of the class
+        return cls(**standard_dict)
 
     @classmethod
     def safeload(cls, raw_measurement: dict, key: str, validation_configuration: dict):
@@ -116,7 +122,11 @@ class AirQualityMeasurement:
         # going back a given number of hours from the latest measurement
         # returns a list of AirQualityMeasurement objects
         dynamodb = DynamoDB()
-        measurements = dynamodb.get_newest_measurement_for_location_param(composite_location, param)
+        measurements = dynamodb.get_newest_measurement_for_location_param(MEASUREMENTS_TABLE, composite_location, param)
+        latest_timestamp_epoch = int(measurements["timestamp_utc"]["N"])
+        start_time = latest_timestamp_epoch - 3600 * window_hours
+        measurements = dynamodb.get_measurements_from(MEASUREMENTS_TABLE, composite_location, param, start_time)
+        return [cls.from_dynamo_item(item) for item in measurements]
 
 # we need to keep the dynamo stuff generic 
 class InvalidAirQualityMeasurement(Exception):

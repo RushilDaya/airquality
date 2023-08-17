@@ -89,7 +89,7 @@
         "city" : {"Type":"String","Value":"Leuven"},
         "sourceType" : {"Type":"String","Value":"government"},
         "parameter" : {"Type":"String","Value":"CO"},
-        "latitude" : {"Type":"Number","Value":"51.8823"},
+        "latitude" : {"Type":"Number","Value":"50.8823"},
         "location" : {"Type":"String","Value":"Sluisstraat"},
         "sourceName" : {"Type":"String","Value":"Leuven"},
         "value" : {"Type":"Number","Value":"30"},

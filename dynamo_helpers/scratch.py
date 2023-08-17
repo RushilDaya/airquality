@@ -1,10 +1,4 @@
-from src.aws.dynamodb import DynamoDB
-from src.aws import MEASUREMENTS_TABLE
+from src.models.aggregratedmeasurement import AggregatedMeasurement
 
-Dynamo = DynamoDB()
-response = Dynamo.get_newest_measurement_for_location_param(
-    MEASUREMENTS_TABLE,
-    "BE_Leuven",
-    "CO",
-)
-print(response)
+aggregation = AggregatedMeasurement.compute_aggregation("BE_Leuven", "CO")
+aggregation.save()
