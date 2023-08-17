@@ -8,7 +8,7 @@ config = {
     "date_local": {"type": "str"},
     "city": {"type": "str"},
     "sourceType": {"type": "str"},
-    "parameter": {
+    "param": {
         "type": "str",
         "case": "upper",
         "accepted_values": [

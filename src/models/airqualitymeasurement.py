@@ -3,6 +3,7 @@ import json
 from datetime import datetime
 
 from src.aws.dynamodb import DynamoDB
+from src.aws import MEASUREMENTS_TABLE
 from src.models.validators.airqualitymeasurement_config import config as VALIDATION_CONFIGURATION
 
 
@@ -17,7 +18,7 @@ class AirQualityMeasurement:
     sourceType: str
     date_utc: str
     date_local: str
-    parameter: str
+    param: str
     unit: str
     value: float
 
@@ -45,7 +46,7 @@ class AirQualityMeasurement:
             dynamodb.format_values({"timestamp_utc": self.timestamp_utc}, {"timestamp_utc": "int"})
         )
         print(f"saving to dynamodb: {dynamo_formatted_values}")
-        dynamodb.put_measurement(dynamo_formatted_values)
+        dynamodb.put_item(MEASUREMENTS_TABLE, dynamo_formatted_values)
 
     @classmethod
     def from_raw_message(cls, raw_measurement: dict):
@@ -59,7 +60,7 @@ class AirQualityMeasurement:
             sourceType=cls.safeload(raw_measurement, "sourceType", VALIDATION_CONFIGURATION),
             date_utc=cls.safeload(raw_measurement, "date_utc", VALIDATION_CONFIGURATION),
             date_local=cls.safeload(raw_measurement, "date_local", VALIDATION_CONFIGURATION),
-            parameter=cls.safeload(raw_measurement, "parameter", VALIDATION_CONFIGURATION),
+            param=cls.safeload(raw_measurement, "param", VALIDATION_CONFIGURATION),
             unit=cls.safeload(raw_measurement, "unit", VALIDATION_CONFIGURATION),
             value=cls.safeload(raw_measurement, "value", VALIDATION_CONFIGURATION),
         )
@@ -68,7 +69,15 @@ class AirQualityMeasurement:
     def safeload(cls, raw_measurement: dict, key: str, validation_configuration: dict):
         # this validates inputs when ingesting a raw measurement for the first time
         # it is not used when querying the database (assumes data is already validated)
-        value = raw_measurement["MessageAttributes"][key]["Value"]
+
+        if key == "param":
+            # param is a special case because it is a reserved keyword in dynamodb
+            # need to extract it as param instead of parameter
+            # Find a more elegant solution for this
+            value = raw_measurement["MessageAttributes"]["parameter"]["Value"]
+        else:
+            value = raw_measurement["MessageAttributes"][key]["Value"]
+
         if validation_configuration.get(key) is None:
             raise InvalidAirQualityMeasurement(f"Unkown key: {key}")
 
@@ -100,7 +109,15 @@ class AirQualityMeasurement:
             ):
                 raise InvalidAirQualityMeasurement(f"Invalid value for {key}: {value}")
         return value
+    
+    @classmethod
+    def get_latest_air_quality_measurements(cls, composite_location: str, param: str, window_hours: int):
+        # gathers all the latest measurements for a given composite location and param
+        # going back a given number of hours from the latest measurement
+        # returns a list of AirQualityMeasurement objects
+        dynamodb = DynamoDB()
+        measurements = dynamodb.get_newest_measurement_for_location_param(composite_location, param)
 
-
+# we need to keep the dynamo stuff generic 
 class InvalidAirQualityMeasurement(Exception):
     pass

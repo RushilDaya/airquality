@@ -1,7 +1,8 @@
 import json
-from src.models.airqualitymeasurement import AirQualityMeasurement, InvalidAirQualityMeasurement
+from typing import Tuple
+from src.models.airqualitymeasurement import AirQualityMeasurement
 
-def process_new_aq_measurement(raw_measurement: dict):
+def process_new_aq_measurement(raw_measurement: dict) -> Tuple[str, str]:
     """
     function will parse the incoming air quality measurement,
     validate that it has a correct structure,
@@ -16,5 +17,7 @@ def process_new_aq_measurement(raw_measurement: dict):
         
     measurement = AirQualityMeasurement.from_raw_message(raw_measurement)
     measurement.save()
+
+    return measurement.location, measurement.param
     
     
