@@ -122,8 +122,8 @@ class AirQualityMeasurement:
         # going back a given number of hours from the latest measurement
         # returns a list of AirQualityMeasurement objects
         dynamodb = DynamoDB()
-        measurements = dynamodb.get_newest_measurement_for_location_param(MEASUREMENTS_TABLE, composite_location, param)
-        latest_timestamp_epoch = int(measurements["timestamp_utc"]["N"])
+        measurement = dynamodb.get_newest_measurement_for_location_param(MEASUREMENTS_TABLE, composite_location, param)
+        latest_timestamp_epoch = int(measurement["timestamp_utc"]["N"])
         start_time = latest_timestamp_epoch - 3600 * window_hours
         measurements = dynamodb.get_measurements_from(MEASUREMENTS_TABLE, composite_location, param, start_time)
         return [cls.from_dynamo_item(item) for item in measurements]

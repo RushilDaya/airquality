@@ -18,6 +18,6 @@ def process_new_aq_measurement(raw_measurement: dict) -> Tuple[str, str]:
     measurement = AirQualityMeasurement.from_raw_message(raw_measurement)
     measurement.save()
 
-    return measurement.location, measurement.param
+    return measurement.composite_location, measurement.param
     
     
