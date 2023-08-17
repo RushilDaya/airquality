@@ -28,7 +28,7 @@
             "latitude" : {"Type":"Number","Value":"51.8823"},
             "location" : {"Type":"String","Value":"Sluisstraat"},
             "sourceName" : {"Type":"String","Value":"Leuven"},
-            "value" : {"Type":"Number","Value":"30"},
+            "value" : {"Type":"Number","Value":"300"},
             "longitude" : {"Type":"Number","Value":"4.7138"}
         }
     },

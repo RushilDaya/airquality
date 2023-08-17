@@ -10,3 +10,5 @@ not going to work properly and as such i will define my own data
 -> centralize environment  variables
 
 * issue: the key doesn't account for the same time but different params: need to fix that - for now being optimistic in using different timestamps for the values
+
+* note i needed to change the lambda timeout away from 3 seconds to 15s
