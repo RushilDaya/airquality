@@ -12,4 +12,16 @@ while 'LastEvaluatedKey' in response:
     data.extend(response['Items'])
     
 print(data)
-print(f"count: {len(data)}")
+print(f"count measurements: {len(data)}")
+
+table = dynamodb.Table('airmax-rushildaya-aq-aggregations')
+
+response = table.scan()
+data = response['Items']
+
+while 'LastEvaluatedKey' in response:
+    response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
+    data.extend(response['Items'])
+    
+print(data)
+print(f"count aggregations: {len(data)}")

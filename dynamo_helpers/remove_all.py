@@ -20,3 +20,22 @@ with table.batch_writer() as batch:
                 'timestamp_utc': each['timestamp_utc']
             }
         )
+
+
+table = dynamodb.Table('airmax-rushildaya-aq-aggregations')
+
+response = table.scan()
+data = response['Items']
+
+while 'LastEvaluatedKey' in response:
+    response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
+    data.extend(response['Items'])
+
+with table.batch_writer() as batch:
+    for each in data:
+        batch.delete_item(
+            Key={
+                'composite_location': each['composite_location'],
+                'param': each['param']
+            }
+        )
