@@ -43,6 +43,7 @@ class DynamoDB:
     ):
         # this function is very specific should be refactored so there
         # is no model specific logic in this dynamodb class if there is time
+        print(f"getting newest measurement for {composite_location} {param}")
         response = self.dynamodb.query(
             TableName=table_name,
             KeyConditionExpression="composite_location = :composite_location",
@@ -52,7 +53,10 @@ class DynamoDB:
             },
             FilterExpression="param = :param",
             ScanIndexForward=False,
-            Limit=1,
+            Limit=1000, # this is a hack to get the newest measurement
+            # the problem is filtering happens after the scan/sort so if the
+            # newest value for a certain parameter is not in the first 1000
+            # items then it will not be returned
         )
         if response["Count"] == 0:
             return []
