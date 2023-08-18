@@ -1,5 +1,7 @@
 from src.models.aggregratedmeasurement import AggregatedMeasurement
-from src.views.html import create_table_from_aggregations
+from src.views.html import create_tables_from_aggregations, create_full_page
+from src.aws.s3 import upload_file_to_s3
+from src.aws import S3_VIEW_BUCKET
 
 
 def update_view():
@@ -7,6 +9,8 @@ def update_view():
     # recreate the html view file (table)
     # upload the html view file to s3
 
-    # get all the latest aggregations
     aggregations = AggregatedMeasurement.get_all_aggregations()
-    html_table = create_table_from_aggregations(aggregations)
+    html_tables = create_tables_from_aggregations(aggregations)
+    full_page = create_full_page(html_tables)
+    response = upload_file_to_s3(S3_VIEW_BUCKET, full_page, 'index.html')
+    print(response)
