@@ -1,12 +1,12 @@
 import boto3
 from typing import Optional
-from src.aws import PROFILE, REGION
+from src.config import AWS_PROFILE, AWS_REGION
 
 
 class DynamoDB:
     def __init__(self):
-        boto3_session = boto3.Session(profile_name=PROFILE)
-        self.dynamodb = boto3_session.client("dynamodb", region_name=REGION)
+        boto3_session = boto3.Session(profile_name=AWS_PROFILE)
+        self.dynamodb = boto3_session.client("dynamodb", region_name=AWS_REGION)
 
     @staticmethod
     def format_values(data_dict: dict, datatypes: dict):

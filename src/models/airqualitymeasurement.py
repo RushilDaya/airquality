@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from src.aws.dynamodb import DynamoDB
-from src.aws import MEASUREMENTS_TABLE
+from src.config import MEASUREMENTS_TABLE
 from src.models.validators.airqualitymeasurement_config import config as VALIDATION_CONFIGURATION
 
 

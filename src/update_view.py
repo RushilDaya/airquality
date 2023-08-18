@@ -1,7 +1,7 @@
 from src.models.aggregratedmeasurement import AggregatedMeasurement
 from src.views.html import create_tables_from_aggregations, create_full_page
 from src.aws.s3 import upload_file_to_s3
-from src.aws import S3_VIEW_BUCKET
+from src.config import S3_VIEW_BUCKET
 
 
 def update_view():

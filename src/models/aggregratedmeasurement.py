@@ -1,9 +1,7 @@
 from dataclasses import dataclass
 from src.aws.dynamodb import DynamoDB
-from src.aws import AGGREGATIONS_TABLE
+from src.config import AGGREGATIONS_TABLE, AGGREGATION_WINDOW_HOURS
 from src.models.airqualitymeasurement import AirQualityMeasurement
-
-AGGREGATION_WINDOW_HOURS = 3
 
 
 @dataclass
