@@ -53,13 +53,19 @@ class AggregatedMeasurement:
         )
         if len(latest_measurements) == 0:
             return None
-        
+
         if len(set([measurement.unit for measurement in latest_measurements])) > 1:
             raise ValueError("multiple units for same param - unit conversion not implemented")
 
-        approximate_longitude = sum([measurement.longitude for measurement in latest_measurements])/len(latest_measurements)
-        approximate_latitude = sum([measurement.latitude for measurement in latest_measurements])/len(latest_measurements)
-        aggregated_value = sum([measurement.value for measurement in latest_measurements])/len(latest_measurements)
+        approximate_longitude = sum(
+            [measurement.longitude for measurement in latest_measurements]
+        ) / len(latest_measurements)
+        approximate_latitude = sum(
+            [measurement.latitude for measurement in latest_measurements]
+        ) / len(latest_measurements)
+        aggregated_value = sum([measurement.value for measurement in latest_measurements]) / len(
+            latest_measurements
+        )
 
         latest_measurements.sort(key=lambda x: x.timestamp_utc, reverse=True)
         latest_measurement = latest_measurements[0]
@@ -76,10 +82,8 @@ class AggregatedMeasurement:
             lastest_measurement_time_local=latest_measurement.date_local,
             lastest_measurement_time_epoch=latest_measurement.timestamp_utc,
             aggregation_window_hours=AGGREGATION_WINDOW_HOURS,
-            number_of_measurements_in_window=len(latest_measurements)
+            number_of_measurements_in_window=len(latest_measurements),
         )
-
-
 
     def save(self):
         # save to dynamodb table
@@ -95,3 +99,17 @@ class AggregatedMeasurement:
         )
         print(f"saving to dynamodb: {dynamo_formatted_values}")
         dynamodb.put_item(AGGREGATIONS_TABLE, dynamo_formatted_values)
+
+    @classmethod
+    def get_all_aggregations(cls):
+        # get all the aggregations from dynamodb
+        dynamodb = DynamoDB()
+        aggregations = dynamodb.get_all_items(AGGREGATIONS_TABLE)
+        # removev the composite_location from the dict
+        for aggregation in aggregations:
+            del aggregation["composite_location"]
+        formatted = [
+            dynamodb.from_dynamo_to_standard_dict(aggregation, cls.datatypes)
+            for aggregation in aggregations
+        ]
+        return [cls(**formatted_agg) for formatted_agg in formatted]

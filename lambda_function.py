@@ -2,6 +2,7 @@ import json
 from typing import Optional, Set, Tuple
 from src.process_new_aq_measurement import process_new_aq_measurement
 from src.update_latest_aggregation import update_latest_aggregation
+from src.update_view import update_view
 
 # minimal logic here: just pass the payload to the process_new_aq_measurement function
 def lambda_handler(event:dict, context:Optional[dict] = None):
@@ -13,6 +14,7 @@ def lambda_handler(event:dict, context:Optional[dict] = None):
         if event_location_param is not None:
             event_locations_params.add(event_location_param)
     update_latest_aggregation(list(event_locations_params)) # this can be moved to separate function if it gets intensive
+    update_view() # this can be moved to separate function if it gets intensive
     return {"statusCode": 200, "body": json.dumps(f'Processed {len(event["Records"])} messages')}
 
 

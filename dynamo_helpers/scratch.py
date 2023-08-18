@@ -1,4 +1,3 @@
-from src.models.aggregratedmeasurement import AggregatedMeasurement
+from src.update_view import update_view
 
-aggregation = AggregatedMeasurement.compute_aggregation("BE_Leuven", "PM10")
-aggregation.save()
+update_view()

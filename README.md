@@ -12,3 +12,9 @@ not going to work properly and as such i will define my own data
 * issue: the key doesn't account for the same time but different params: need to fix that - for now being optimistic in using different timestamps for the values
 
 * note i needed to change the lambda timeout away from 3 seconds to 15s
+
+remaining steps now:
+make a simple page showing the aggregations (keep it very simple just an html table) which gets updated in s3? 
+
+once this is done i want to take some time for refactoring (few hours)
+then i want begin doing IaC (this might be only next monday)

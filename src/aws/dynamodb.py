@@ -1,4 +1,5 @@
 import boto3
+from typing import Optional
 from src.aws import PROFILE, REGION
 
 
@@ -22,11 +23,14 @@ class DynamoDB:
         return formatted_dict
     
     @staticmethod
-    def from_dynamo_to_standard_dict(dynamo_dict: dict):
+    def from_dynamo_to_standard_dict(dynamo_dict: dict, datatypes: Optional[dict] = None):
         standard_dict = {}
         for item in dynamo_dict:
             if "N" in dynamo_dict[item]:
-                standard_dict[item] = float(dynamo_dict[item]["N"])
+                if datatypes is None or datatypes[item] == "float":
+                    standard_dict[item] = float(dynamo_dict[item]["N"])
+                else:
+                    standard_dict[item] = int(dynamo_dict[item]["N"])
             elif "S" in dynamo_dict[item]:
                 standard_dict[item] = dynamo_dict[item]["S"]
             else:
@@ -82,4 +86,15 @@ class DynamoDB:
         if response["Count"] == 0:
             return []
         return response["Items"]
+    
+    def get_all_items(self, table_name: str):
+        # normally should only be used on smaller tables
+        response = self.dynamodb.scan(TableName=table_name)
+        data = response['Items']
+
+        while 'LastEvaluatedKey' in response:
+            response = self.dynamodb.scan(TableName=table_name, ExclusiveStartKey=response['LastEvaluatedKey'])
+            data.extend(response['Items'])
+        return data
+
     
