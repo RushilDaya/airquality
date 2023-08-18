@@ -1,6 +1,8 @@
 #!/bin/sh
 mkdir -p package
 rm -rf package
+rm -rf build
+rm -rf aq.egg-info
 rm package.zip
 mkdir -p package
 pip install --force-reinstall --target ./package .

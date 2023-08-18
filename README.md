@@ -13,8 +13,12 @@ not going to work properly and as such i will define my own data
 
 * note i needed to change the lambda timeout away from 3 seconds to 15s
 
+* http://rushildaya-aq-results.s3-website-eu-west-1.amazonaws.com/ hosts the display site
+
 remaining steps now:
-make a simple page showing the aggregations (keep it very simple just an html table) which gets updated in s3? 
+
+Solution is now done in the basic sense (meets the brief)
+Now we can 
 
 once this is done i want to take some time for refactoring (few hours)
 then i want begin doing IaC (this might be only next monday)
