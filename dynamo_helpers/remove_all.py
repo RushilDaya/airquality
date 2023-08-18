@@ -1,9 +1,15 @@
 
 import boto3
+from src.config import (
+    AWS_PROFILE,
+    AWS_REGION,
+    MEASUREMENTS_TABLE,
+    AGGREGATIONS_TABLE
+)
 
-boto3_session = boto3.Session(profile_name='dataminded')
-dynamodb = boto3_session.resource('dynamodb', region_name='eu-west-1')
-table = dynamodb.Table('airmax-rushildaya-aq-measurements')
+boto3_session = boto3.Session(profile_name=AWS_PROFILE)
+dynamodb = boto3_session.resource('dynamodb', region_name=AWS_REGION)
+table = dynamodb.Table(MEASUREMENTS_TABLE)
 
 response = table.scan()
 data = response['Items']
@@ -22,7 +28,7 @@ with table.batch_writer() as batch:
         )
 
 
-table = dynamodb.Table('airmax-rushildaya-aq-aggregations')
+table = dynamodb.Table(AGGREGATIONS_TABLE)
 
 response = table.scan()
 data = response['Items']

@@ -5,6 +5,8 @@ import os
 
 # default values are for the production environment
 # can be overided by environment variables for local development if needed
+# this approach can be improved to be more protective over the production environment
+# consider using something like secrets manager for the production values
 
 AWS_PROFILE = os.environ.get('AWS_PROFILE', None)
 AWS_REGION = os.environ.get('AWS_REGION', 'eu-west-1')
