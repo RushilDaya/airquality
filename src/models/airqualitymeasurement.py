@@ -63,12 +63,12 @@ class AirQualityMeasurement:
             unit=cls.safeload(raw_measurement, "unit", VALIDATION_CONFIGURATION),
             value=cls.safeload(raw_measurement, "value", VALIDATION_CONFIGURATION),
         )
-    
+
     @classmethod
     def from_dynamo_item(cls, dynamo_item: dict):
         standard_dict = DynamoDB.from_dynamo_to_standard_dict(dynamo_item)
-        del standard_dict["composite_location"] # this is not a property of the class
-        del standard_dict["timestamp_utc"] # this is not a property of the class
+        del standard_dict["composite_location"]  # this is not a property of the class
+        del standard_dict["timestamp_utc"]  # this is not a property of the class
         return cls(**standard_dict)
 
     @classmethod
@@ -115,19 +115,26 @@ class AirQualityMeasurement:
             ):
                 raise InvalidAirQualityMeasurement(f"Invalid value for {key}: {value}")
         return value
-    
+
     @classmethod
-    def get_latest_air_quality_measurements(cls, composite_location: str, param: str, window_hours: int):
+    def get_latest_air_quality_measurements(
+        cls, composite_location: str, param: str, window_hours: int
+    ):
         # gathers all the latest measurements for a given composite location and param
         # going back a given number of hours from the latest measurement
         # returns a list of AirQualityMeasurement objects
         dynamodb = DynamoDB()
-        measurement = dynamodb.get_newest_measurement_for_location_param(MEASUREMENTS_TABLE, composite_location, param)
+        measurement = dynamodb.get_newest_measurement_for_location_param(
+            MEASUREMENTS_TABLE, composite_location, param
+        )
         latest_timestamp_epoch = int(measurement["timestamp_utc"]["N"])
         start_time = latest_timestamp_epoch - 3600 * window_hours
-        measurements = dynamodb.get_measurements_from(MEASUREMENTS_TABLE, composite_location, param, start_time)
+        measurements = dynamodb.get_measurements_from(
+            MEASUREMENTS_TABLE, composite_location, param, start_time
+        )
         return [cls.from_dynamo_item(item) for item in measurements]
 
-# we need to keep the dynamo stuff generic 
+
+# we need to keep the dynamo stuff generic
 class InvalidAirQualityMeasurement(Exception):
     pass

@@ -1,6 +1,7 @@
 from typing import List
 from src.models.aggregratedmeasurement import AggregatedMeasurement
 
+
 def create_full_page(html_elements: List[str]) -> str:
     # return a full html page with the given html elements
     # inserted into the body in the order they appear in the list
@@ -26,8 +27,8 @@ def create_full_page(html_elements: List[str]) -> str:
         </html>
     """
 
+
 def create_tables_from_aggregations(aggregations: List[AggregatedMeasurement]) -> List[str]:
-    
     # group aggregations by city
     aggregations_by_city = {}
     for aggregation in aggregations:
@@ -56,6 +57,7 @@ def create_tables_from_aggregations(aggregations: List[AggregatedMeasurement]) -
         )
     return html_tables
 
+
 def create_html_row(aggregation: AggregatedMeasurement) -> str:
     return f"""
         <tr>
@@ -66,4 +68,3 @@ def create_html_row(aggregation: AggregatedMeasurement) -> str:
             <td>{aggregation.lastest_measurement_time_local}</td>
         </tr>
     """
-

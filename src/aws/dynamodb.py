@@ -21,7 +21,7 @@ class DynamoDB:
             else:
                 raise Exception(f"Unknown datatype: {datatypes[item]}")
         return formatted_dict
-    
+
     @staticmethod
     def from_dynamo_to_standard_dict(dynamo_dict: dict, datatypes: Optional[dict] = None):
         standard_dict = {}
@@ -57,7 +57,7 @@ class DynamoDB:
             },
             FilterExpression="param = :param",
             ScanIndexForward=False,
-            Limit=1000, # this is a hack to get the newest measurement
+            Limit=1000,  # this is a hack to get the newest measurement
             # the problem is filtering happens after the scan/sort so if the
             # newest value for a certain parameter is not in the first 1000
             # items then it will not be returned
@@ -65,7 +65,7 @@ class DynamoDB:
         if response["Count"] == 0:
             return []
         return response["Items"][0]
-    
+
     def get_measurements_from(
         self, table_name: str, composite_location: str, param: str, start_time_epoch: int
     ):
@@ -86,15 +86,15 @@ class DynamoDB:
         if response["Count"] == 0:
             return []
         return response["Items"]
-    
+
     def get_all_items(self, table_name: str):
         # normally should only be used on smaller tables
         response = self.dynamodb.scan(TableName=table_name)
-        data = response['Items']
+        data = response["Items"]
 
-        while 'LastEvaluatedKey' in response:
-            response = self.dynamodb.scan(TableName=table_name, ExclusiveStartKey=response['LastEvaluatedKey'])
-            data.extend(response['Items'])
+        while "LastEvaluatedKey" in response:
+            response = self.dynamodb.scan(
+                TableName=table_name, ExclusiveStartKey=response["LastEvaluatedKey"]
+            )
+            data.extend(response["Items"])
         return data
-
-    
