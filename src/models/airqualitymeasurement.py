@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Optional
 
 from src.aws.dynamodb import DynamoDB
 from src.config import MEASUREMENTS_TABLE
@@ -112,6 +113,45 @@ class AirQualityMeasurement:
                 raise InvalidAirQualityMeasurement(f"Invalid value for {key}: {value}")
         return value
 
+    @staticmethod
+    def get_newest_dynamo_item_for_location_parameter(
+        composite_location: str, param: str
+    ) -> Optional[dict]:
+        # specific function to query the dynamodb table based on conditions
+        dynamodb = DynamoDB()
+        items = dynamodb.get_filtered_items(
+            MEASUREMENTS_TABLE,
+            key_condition_expression="composite_location = :composite_location",
+            expression_attribute_values={
+                ":composite_location": {"S": composite_location},
+                ":param": {"S": param},
+            },
+            filter_expression="param = :param",
+            scan_forward_index=False,
+            limit=1000,  # this is a hack to get the latest item
+        )
+        if len(items) == 0:
+            return None
+        return items[0]
+
+    @staticmethod
+    def get_dynamo_items_from(
+        composite_location: str, param: str, start_time_epoch: int
+    ) -> Optional[dict]:
+        dynamodb = DynamoDB()
+        return dynamodb.get_filtered_items(
+            MEASUREMENTS_TABLE,
+            key_condition_expression="composite_location = :composite_location AND timestamp_utc >= :start_time_epoch",
+            expression_attribute_values={
+                ":composite_location": {"S": composite_location},
+                ":start_time_epoch": {"N": str(start_time_epoch)},
+                ":param": {"S": param},
+            },
+            filter_expression="param = :param",
+            scan_forward_index=False,
+            limit=1000,
+        )
+
     @classmethod
     def get_latest_air_quality_measurements(
         cls, composite_location: str, param: str, window_hours: int
@@ -119,14 +159,11 @@ class AirQualityMeasurement:
         # gathers all the latest measurements for a given composite location and param
         # going back a given number of hours from the latest measurement
         # returns a list of AirQualityMeasurement objects
-        dynamodb = DynamoDB()
-        measurement = dynamodb.get_newest_measurement_for_location_param(
-            MEASUREMENTS_TABLE, composite_location, param
-        )
+        measurement = cls.get_newest_dynamo_item_for_location_parameter(composite_location, param)
         latest_timestamp_epoch = int(measurement["timestamp_utc"]["N"])
         start_time = latest_timestamp_epoch - 3600 * window_hours
-        measurements = dynamodb.get_measurements_from(
-            MEASUREMENTS_TABLE, composite_location, param, start_time
+        measurements = cls.get_dynamo_items_from(
+            composite_location, param, start_time
         )
         return [cls.from_dynamo_item(item) for item in measurements]
 

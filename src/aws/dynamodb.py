@@ -42,53 +42,8 @@ class DynamoDB:
         response = self.dynamodb.put_item(TableName=table_name, Item=data_dict)
         print(response)
 
-    def get_newest_measurement_for_location_param(
-        self, table_name: str, composite_location: str, param: str
-    ):
-        # this function is very specific should be refactored so there
-        # is no model specific logic in this dynamodb class if there is time
-        print(f"getting newest measurement for {composite_location} {param}")
-        response = self.dynamodb.query(
-            TableName=table_name,
-            KeyConditionExpression="composite_location = :composite_location",
-            ExpressionAttributeValues={
-                ":composite_location": {"S": composite_location},
-                ":param": {"S": param},
-            },
-            FilterExpression="param = :param",
-            ScanIndexForward=False,
-            Limit=1000,  # this is a hack to get the newest measurement
-            # the problem is filtering happens after the scan/sort so if the
-            # newest value for a certain parameter is not in the first 1000
-            # items then it will not be returned
-        )
-        if response["Count"] == 0:
-            return []
-        return response["Items"][0]
-
-    def get_measurements_from(
-        self, table_name: str, composite_location: str, param: str, start_time_epoch: int
-    ):
-        # this function is very specific should be refactored so there
-        # is no model specific logic in this dynamodb class if there is time
-        response = self.dynamodb.query(
-            TableName=table_name,
-            KeyConditionExpression="composite_location = :composite_location AND timestamp_utc >= :timestamp_utc",
-            ExpressionAttributeValues={
-                ":composite_location": {"S": composite_location},
-                ":param": {"S": param},
-                ":timestamp_utc": {"N": str(start_time_epoch)},
-            },
-            FilterExpression="param = :param",
-            ScanIndexForward=False,
-            Limit=200,
-        )
-        if response["Count"] == 0:
-            return []
-        return response["Items"]
-
     def get_all_items(self, table_name: str):
-        # normally should only be used on smaller tables
+        # this is a full table scan and should only be used for small tables
         response = self.dynamodb.scan(TableName=table_name)
         data = response["Items"]
 
@@ -98,3 +53,20 @@ class DynamoDB:
             )
             data.extend(response["Items"])
         return data
+    
+    def get_filtered_items(self, table_name:str, key_condition_expression:str,
+                           expression_attribute_values:dict,
+                           filter_expression:Optional[str]=None,
+                           scan_forward_index:Optional[bool]=False,
+                           limit:Optional[int]=100):
+        response = self.dynamodb.query(
+            TableName=table_name,
+            KeyConditionExpression=key_condition_expression,
+            ExpressionAttributeValues=expression_attribute_values,
+            FilterExpression=filter_expression,
+            ScanIndexForward=scan_forward_index,
+            Limit=limit,
+        )
+        if response["Count"] == 0:
+            return []
+        return response["Items"]
