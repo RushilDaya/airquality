@@ -10,4 +10,6 @@ cd package
 zip -r ../package.zip .
 cd ..
 zip package.zip lambda_function.py
-cp package.zip /mnt/c/Users/rushild/Desktop/package.zip # replace with direct deploy later on
+aws --profile dataminded --region eu-west-1 lambda update-function-code \
+    --function-name  rushildaya-test \
+    --zip-file fileb://package.zip

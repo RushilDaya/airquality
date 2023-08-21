@@ -5,7 +5,7 @@
 
 # Next Steps:
 * put the validation configuration in a accessible .json file [x]
-* fix lambda deployment command (currently is a two step process)
+* fix lambda deployment command (currently is a two step process) [x]
 * general refactoring ... (ambigious)
 * refactor aws commands to be agnostic to the models 
 * Infrastructure as code for dynamo,lambda,s3,sqs

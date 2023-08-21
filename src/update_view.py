@@ -13,4 +13,5 @@ def update_view():
     html_tables = create_tables_from_aggregations(aggregations)
     full_page = create_full_page(html_tables)
     response = upload_file_to_s3(S3_VIEW_BUCKET, full_page, "index.html")
+    print("Uploaded to S3")
     print(response)
