@@ -6,9 +6,11 @@
 # Next Steps:
 * put the validation configuration in a accessible .json file [x]
 * fix lambda deployment command (currently is a two step process) [x]
-* general refactoring ... (ambigious)
-* refactor aws commands to be agnostic to the models 
+* refactor aws commands to be agnostic to the models
 * Infrastructure as code for dynamo,lambda,s3,sqs
+* refactor views to be more readible & composible html
+* data generator code
+* better visualization
 * documentation of code (comments / readme / how to run)
 * presentation to explain the code / architecture / next steps [1 unit]
 
