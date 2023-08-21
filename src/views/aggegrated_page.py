@@ -2,9 +2,7 @@ from typing import List
 from src.models.aggregratedmeasurement import AggregatedMeasurement
 
 
-def create_full_page(html_elements: List[str]) -> str:
-    # return a full html page with the given html elements
-    # inserted into the body in the order they appear in the list
+def create_aggregated_page(aggregations: List[AggregatedMeasurement]) -> str:
     return f"""
         <!DOCTYPE html>
         <html lang="en">
@@ -19,16 +17,19 @@ def create_full_page(html_elements: List[str]) -> str:
                         padding: 5px;
                         text-align: left;
                     }}
+                    th {{
+                        background-color: #4CAF50;
+                    }}
                 </style>
             </head>
             <body>
-                {"".join(html_elements)}
+            <h1>Current Air Quality Indicators for Belgian Cities</h1>
+                {"".join(aggregation_tables(aggregations))}
             </body>
         </html>
     """
 
-
-def create_tables_from_aggregations(aggregations: List[AggregatedMeasurement]) -> List[str]:
+def aggregation_tables(aggregations: List[AggregatedMeasurement]) -> List[str]:
     # group aggregations by city
     aggregations_by_city = {}
     for aggregation in aggregations:
@@ -48,17 +49,17 @@ def create_tables_from_aggregations(aggregations: List[AggregatedMeasurement]) -
                     <th>param</th>
                     <th>unit</th>
                     <th>aggregated value</th>
-                    <th> number of measurements</th>
+                    <th>number of measurements</th>
                     <th>last updated local time</th>
                 </tr>
-                {"".join([create_html_row(aggregation) for aggregation in aggregations_by_city[city]])}
+                {"".join([aggregation_row(aggregation) for aggregation in aggregations_by_city[city]])}
             </table>
             """
         )
     return html_tables
 
 
-def create_html_row(aggregation: AggregatedMeasurement) -> str:
+def aggregation_row(aggregation: AggregatedMeasurement) -> str:
     return f"""
         <tr>
             <td>{aggregation.param}</td>

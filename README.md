@@ -8,7 +8,7 @@
 * fix lambda deployment command (currently is a two step process) [x]
 * refactor aws commands to be agnostic to the models [x]
 * Infrastructure as code for dynamo,lambda,s3,sqs
-* refactor views to be more readible & composible html
+* refactor views to be more readible & composible html [x]
 * data generator code
 * better visualization
 * documentation of code (comments / readme / how to run)
