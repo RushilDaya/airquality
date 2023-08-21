@@ -4,7 +4,7 @@
 
 
 # Next Steps:
-* put the validation configuration in a accessible .json file
+* put the validation configuration in a accessible .json file [x]
 * fix lambda deployment command (currently is a two step process)
 * general refactoring ... (ambigious)
 * refactor aws commands to be agnostic to the models 
