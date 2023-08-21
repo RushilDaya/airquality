@@ -6,7 +6,6 @@ from src.config import MEASUREMENTS_TABLE
 from src import VALIDATION_CONFIGURATION
 
 
-
 @dataclass
 class AirQualityMeasurement:
     country: str
@@ -32,18 +31,14 @@ class AirQualityMeasurement:
         return int(datetime.strptime(self.date_utc, "%Y-%m-%dT%H:%M:%S.%fZ").timestamp())
 
     def save(self):
-        # save to dynamodb table
-        datatypes = {k: v["type"] for k, v in VALIDATION_CONFIGURATION.items()}
         dynamodb = DynamoDB()
-        dynamo_formatted_values = dynamodb.format_values(self.__dict__, datatypes)
+        dynamo_formatted_values = dynamodb.to_dynamo_format(self.__dict__)
         # add the values which constitute the primary key
         dynamo_formatted_values.update(
-            dynamodb.format_values(
-                {"composite_location": self.composite_location}, {"composite_location": "str"}
-            )
+            dynamodb.to_dynamo_format({"composite_location": self.composite_location})
         )
         dynamo_formatted_values.update(
-            dynamodb.format_values({"timestamp_utc": self.timestamp_utc}, {"timestamp_utc": "int"})
+            dynamodb.to_dynamo_format({"timestamp_utc": self.timestamp_utc})
         )
         print(f"saving to dynamodb: {dynamo_formatted_values}")
         dynamodb.put_item(MEASUREMENTS_TABLE, dynamo_formatted_values)
@@ -67,7 +62,7 @@ class AirQualityMeasurement:
 
     @classmethod
     def from_dynamo_item(cls, dynamo_item: dict):
-        standard_dict = DynamoDB.from_dynamo_to_standard_dict(dynamo_item)
+        standard_dict = DynamoDB.from_dynamo_format(dynamo_item)
         del standard_dict["composite_location"]  # this is not a property of the class
         del standard_dict["timestamp_utc"]  # this is not a property of the class
         return cls(**standard_dict)

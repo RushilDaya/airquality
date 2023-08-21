@@ -9,25 +9,25 @@ class DynamoDB:
         self.dynamodb = boto3_session.client("dynamodb", region_name=AWS_REGION)
 
     @staticmethod
-    def format_values(data_dict: dict, datatypes: dict):
+    def to_dynamo_format(data_dict: dict):
         formatted_dict = {}
         for item in data_dict:
-            if datatypes[item] == "float":
+            if isinstance(data_dict[item], float):
                 formatted_dict[item] = {"N": str(data_dict[item])}
-            elif datatypes[item] == "int":
+            elif isinstance(data_dict[item], int):
                 formatted_dict[item] = {"N": str(data_dict[item])}
-            elif datatypes[item] == "str":
+            elif isinstance(data_dict[item], str):
                 formatted_dict[item] = {"S": data_dict[item]}
             else:
-                raise Exception(f"Unknown datatype: {datatypes[item]}")
+                raise Exception(f"Unknown datatype for: {item}")
         return formatted_dict
 
     @staticmethod
-    def from_dynamo_to_standard_dict(dynamo_dict: dict, datatypes: Optional[dict] = None):
+    def from_dynamo_format(dynamo_dict: dict):
         standard_dict = {}
         for item in dynamo_dict:
             if "N" in dynamo_dict[item]:
-                if datatypes is None or datatypes[item] == "float":
+                if "." in dynamo_dict[item]["N"]:
                     standard_dict[item] = float(dynamo_dict[item]["N"])
                 else:
                     standard_dict[item] = int(dynamo_dict[item]["N"])

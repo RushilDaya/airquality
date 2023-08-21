@@ -19,23 +19,6 @@ class AggregatedMeasurement:
     aggregation_window_hours: int
     number_of_measurements_in_window: int
 
-    # see if there is an easier way to do this
-    # can it be taken from the dataclass?
-    datatypes = {
-        "country": "str",
-        "city": "str",
-        "approximate_longitude": "float",
-        "approximate_latitude": "float",
-        "param": "str",
-        "unit": "str",
-        "aggregated_value": "float",
-        "lastest_measurement_time_utc": "str",
-        "lastest_measurement_time_local": "str",
-        "lastest_measurement_time_epoch": "int",
-        "aggregation_window_hours": "int",
-        "number_of_measurements_in_window": "int",
-    }
-
     @property
     def composite_location(self) -> str:
         return f"{self.country}_{self.city}"
@@ -88,12 +71,10 @@ class AggregatedMeasurement:
         dynamodb = DynamoDB()
 
         data_dict = self.__dict__
-        dynamo_formatted_values = dynamodb.format_values(data_dict, self.datatypes)
+        dynamo_formatted_values = dynamodb.to_dynamo_format(data_dict)
         # add the values which constitute the primary key
         dynamo_formatted_values.update(
-            dynamodb.format_values(
-                {"composite_location": self.composite_location}, {"composite_location": "str"}
-            )
+            dynamodb.to_dynamo_format({"composite_location": self.composite_location})
         )
         print(f"saving to dynamodb: {dynamo_formatted_values}")
         dynamodb.put_item(AGGREGATIONS_TABLE, dynamo_formatted_values)
@@ -106,8 +87,5 @@ class AggregatedMeasurement:
         # removev the composite_location from the dict
         for aggregation in aggregations:
             del aggregation["composite_location"]
-        formatted = [
-            dynamodb.from_dynamo_to_standard_dict(aggregation, cls.datatypes)
-            for aggregation in aggregations
-        ]
+        formatted = [dynamodb.from_dynamo_format(aggregation) for aggregation in aggregations]
         return [cls(**formatted_agg) for formatted_agg in formatted]
