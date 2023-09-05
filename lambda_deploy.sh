@@ -1,4 +1,6 @@
 #!/bin/sh
+set -e # exit on first error
+pytest tests/
 mkdir -p package
 rm -rf package
 rm -rf build
